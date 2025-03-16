@@ -1,0 +1,181 @@
+<head>
+  <link
+    rel="preload"
+    href="https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-2@1.0/KBO-Dia-Gothic_bold.woff"
+    as="font"
+    type="font/woff"
+    crossorigin="anonymous"
+  />
+  <link
+    rel="preload"
+    href="https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-2@1.0/KBO-Dia-Gothic_medium.woff"
+    as="font"
+    type="font/woff"
+    crossorigin="anonymous"
+  />
+  <link
+    rel="preload"
+    href="https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-2@1.0/KBO-Dia-Gothic_light.woff"
+    as="font"
+    type="font/woff"
+    crossorigin="anonymous"
+  />
+
+  <style>
+    @font-face {
+      font-family: "KBO-Dia-Gothic";
+      src: url("https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-2@1.0/KBO-Dia-Gothic_bold.woff")
+        format("woff");
+      font-weight: 700;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    @font-face {
+      font-family: "KBO-Dia-Gothic";
+      src: url("https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-2@1.0/KBO-Dia-Gothic_medium.woff")
+        format("woff");
+      font-weight: 500;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    @font-face {
+      font-family: "KBO-Dia-Gothic";
+      src: url("https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-2@1.0/KBO-Dia-Gothic_light.woff")
+        format("woff");
+      font-weight: 300;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      width: fit-content;
+      height: fit-content;
+    }
+
+    * {
+      font-family: "KBO-Dia-Gothic", "Noto Sans KR", sans-serif;
+    }
+
+    .wrapper {
+      width: fit-content;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .d-day {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+
+      padding: 12px;
+      background-color: aliceblue;
+      border-radius: 8px;
+    }
+
+    .d-day .detail {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .d-day .detail .title {
+      text-align: start;
+      font-size: 14px;
+      font-weight: 500;
+      color: rgb(85, 93, 98);
+    }
+
+    .d-day .detail .desc {
+      text-align: start;
+      font-size: 12px;
+      font-weight: 300;
+      color: rgb(96, 119, 138);
+    }
+
+    .d-day .date {
+      text-align: end;
+      font-size: 24px;
+      font-weight: 700;
+      color: rgb(49, 96, 134);
+    }
+  </style>
+</head>
+
+<div class="wrapper"></div>
+
+<script>
+  function getDdayKST(targetDate) {
+    const now = new Date();
+
+    // 현재 시간을 KST로 변환
+    const nowKST = new Date(now.getTime() + 9 * 60 * 60 * 1000);
+
+    // 목표 날짜를 KST 기준으로 설정
+    const targetKST = new Date(new Date(targetDate).setHours(0, 0, 0, 0));
+
+    // 두 날짜 간 차이 계산 (밀리초 → 일 단위 변환)
+    const diffTime = targetKST.getTime() - nowKST.getTime();
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+    return diffDays;
+  }
+
+  const wrapper = document.querySelector(".wrapper");
+
+  // D-day 정보
+  const dDates = [
+    {
+      title: "국가직",
+      desc: "",
+      date: "2025-04-05",
+    },
+    {
+      title: "지방직",
+      desc: "",
+      date: "2025-06-21",
+    },
+    {
+      title: "군무원",
+      desc: "",
+      date: "2025-07-05",
+    },
+  ];
+
+  const dateElems = dDates.map((dDate) => {
+    const dDateElem = document.createElement("div");
+    dDateElem.classList.add("d-day");
+
+    const detailElem = document.createElement("div");
+    detailElem.classList.add("detail");
+
+    const titleElem = document.createElement("span");
+    titleElem.classList.add("title");
+    titleElem.textContent = dDate.title;
+
+    const descElem = document.createElement("span");
+    descElem.classList.add("desc");
+    descElem.textContent = dDate.desc;
+
+    detailElem.appendChild(titleElem);
+    detailElem.appendChild(descElem);
+
+    const dateElem = document.createElement("span");
+    dateElem.classList.add("date");
+    dateElem.textContent = `D-${getDdayKST(dDate.date)}`;
+
+    dDateElem.appendChild(detailElem);
+    dDateElem.appendChild(dateElem);
+
+    return dDateElem;
+  });
+
+  dateElems.forEach((dateElem) => {
+    wrapper.appendChild(dateElem);
+  });
+</script>
